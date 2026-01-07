@@ -1,36 +1,117 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Build an admin-only product management dashboard using Next.js with server-side rendering, secure authentication, product CRUD operations, cloud-based image uploads, and analytics dashboards.
 
-## Getting Started
+Admin (Dummy)Credentials:
+Shana@gmail.com
+password:admin123
 
-First, run the development server:
+demo link:https://drive.google.com/file/d/1kARNM6Q5as9pvcdVR9pvQqkU9x9Fh8AY/view?usp=sharing
+User Type:
+- Admin
+Admin Capabilities:
+- Login / Logout
+- View dashboard (charts)
+- Create product
+- Edit product
+- Delete product
+- Upload product images
+- View stock & sales charts
+- Create another admin (admin-only)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+User (Admin):
+- id
+- email
+- password
+- role (ADMIN)
+- createdAt
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Product:
+- id
+- name
+- description
+- price
+- stock
+- imageUrl
+- createdAt
+- UpdatedAt
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Sales:
+- id
+- productId
+- quantity
+- date
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Every /admin/* page should check that the current user is logged in and has role ADMIN; otherwise redirect to login.
 
-## Learn More
+Only ADMIN users can hit product CRUD APIs (create, update, delete, even list if it’s an internal API).
 
-To learn more about Next.js, take a look at the following resources:
+The “Create Admin” (onboarding) page itself must be inside /admin and double-check the user is an admin before allowing creation.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+All backend API handlers must verify the session/role; never trust only the frontend.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Before uploading or saving any image, validate type (e.g., jpeg/png), size, and maybe dimensions.
 
-## Deploy on Vercel
+Framework: Next.js (App Router)
+DB: PostgreSQL
+ORM: Prisma
+Auth: NextAuth / JWT
+Validation: Zod
+Charts: Recharts
+Image Storage: Cloudinary
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Login flow
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Admin opens /login → submits email/password.
+
+Server checks DB → creates session/JWT → redirects to /admin/dashboard.
+
+Middleware blocks /admin/* if no valid session (redirect back to /login).
+
+Dashboard view (SSR)
+
+Admin visits /admin/dashboard.
+
+Server fetches summary data (product count, low stock items, basic sales stats) → renders HTML → sends to browser.
+
+Product management (CRUD)
+
+Admin opens /admin/products (list).
+
+List page is SSR: server fetches products from DB, returns rendered table.
+
+For create/edit:
+
+Admin opens form (/admin/products/new or /admin/products/[id]/edit).
+
+Form is multi-step with Zod/Yup validation on each step.
+
+On submit → request goes to API route → server validates again → writes to DB → redirects back to products list.
+
+Delete is usually a button that calls a DELETE API, then reloads/refetches the list.
+
+Image upload flow
+
+In create/edit form, admin chooses an image.
+
+Frontend either:
+
+Uploads directly to Cloudinary/S3 (gets back URL), or
+
+Sends file to your API, which uploads to Cloud and saves the returned URL.
+
+That image URL is stored in the Product record.
+
+Charts flow
+
+Admin goes to /admin/dashboard
+
+Server loads aggregated data (e.g., sales per product, stock levels) and renders a page with chart components that use that data.
+
+API validates the current user is ADMIN, then creates a new User with role ADMIN.
+
+Logout flow
+
+Admin clicks logout.
+
+Session/JWT is cleared server-side and/or cookie is removed.
+
+User is redirected to /login.
