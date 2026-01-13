@@ -3,32 +3,31 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/require-admin";
 import { z } from "zod";
 
+export const dynamic = "force-dynamic";
+
 const productSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   price: z.number().positive("Price must be greater than 0"),
   stock: z.number().int().nonnegative("Stock cannot be negative"),
   description: z.string().nullable(),
 });
+
 export async function POST(
   req: Request,
-  context: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   const auth = await requireAdmin();
   if (!auth.ok) return auth.response;
 
-  const { id } = await context.params;
+  const { id } = params;
 
   const body = await req.json();
 
-  const name = body.get("name") as string;
-  const price = Number(body.get("price"));
-  const stock = Number(body.get("stock"));
-  const description = body.get("description") as string | null;
   const parsed = productSchema.safeParse({
-    name,
-    price,
-    stock,
-    description,
+    name: body.name,
+    price: Number(body.price),
+    stock: Number(body.stock),
+    description: body.description ?? null,
   });
 
   if (!parsed.success) {
@@ -40,15 +39,8 @@ export async function POST(
 
   await prisma.product.update({
     where: { id },
-    data: {
-      name,
-      price,
-      stock,
-      description,
-    },
+    data: parsed.data,
   });
 
-  return NextResponse.redirect(
-    new URL("/admin/products", req.url)
-  );
+  return NextResponse.json({ success: true });
 }
