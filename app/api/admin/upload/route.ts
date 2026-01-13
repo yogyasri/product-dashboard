@@ -3,9 +3,12 @@ import type { NextRequest } from "next/server";
 import cloudinary from "@/lib/cloudinary";
 import { requireAdmin } from "@/lib/require-admin";
 
-// 🔴 THESE TWO LINES ARE CRITICAL
+/**
+ * 🔴 CRITICAL CONFIG
+ */
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function POST(req: NextRequest) {
   const auth = await requireAdmin();
@@ -24,7 +27,7 @@ export async function POST(req: NextRequest) {
 
     if (!file.type.startsWith("image/")) {
       return NextResponse.json(
-        { error: "Only image files are allowed" },
+        { error: "Only image files allowed" },
         { status: 400 }
       );
     }
@@ -49,10 +52,10 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ url: result.secure_url });
-  } catch (error) {
-    console.error("Upload error:", error);
+  } catch (err) {
+    console.error("Upload error:", err);
     return NextResponse.json(
-      { error: "Image upload failed" },
+      { error: "Upload failed" },
       { status: 500 }
     );
   }
