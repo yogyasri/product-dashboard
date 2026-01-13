@@ -3,6 +3,8 @@ import type { NextRequest } from "next/server";
 import cloudinary from "@/lib/cloudinary";
 import { requireAdmin } from "@/lib/require-admin";
 
+// 🔴 THESE TWO LINES ARE CRITICAL
+export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
