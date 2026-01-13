@@ -19,7 +19,7 @@ Admin (Dummy)Credentials:
 Shana@gmail.com
 password:admin123
 
-demo link:https://drive.google.com/file/d/1kARNM6Q5as9pvcdVR9pvQqkU9x9Fh8AY/view?usp=sharing
+demo link:https://drive.google.com/file/d/1pdaI6yesHABIUndG9c2-rKGs5QZBz6le/view?usp=sharing
 User Type:
 - Admin
 Admin Capabilities:
