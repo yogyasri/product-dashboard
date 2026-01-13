@@ -1,4 +1,5 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/require-admin";
 import { z } from "zod";
@@ -13,16 +14,16 @@ const productSchema = z.object({
 });
 
 export async function POST(
-  req: NextRequest,
+  request: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   const auth = await requireAdmin();
   if (!auth.ok) return auth.response;
 
-  // 👇 REQUIRED by the validator
+  // ✅ REQUIRED by Next.js 16 validator
   const { id } = await context.params;
 
-  const body = await req.json();
+  const body = await request.json();
 
   const parsed = productSchema.safeParse({
     name: body.name,
