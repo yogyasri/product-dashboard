@@ -20,8 +20,7 @@ export async function POST(
   const auth = await requireAdmin();
   if (!auth.ok) return auth.response;
 
-  // ✅ REQUIRED by Next.js 16 validator
-  const { id } = await context.params;
+  const { id } = await context.params; // 👈 VERY IMPORTANT
 
   const body = await request.json();
 
