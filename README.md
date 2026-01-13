@@ -1,4 +1,19 @@
-Build an admin-only product management dashboard using Next.js with server-side rendering, secure authentication, product CRUD operations, cloud-based image uploads, and analytics dashboards.
+Server-Rendered E-commerce Product Management Dashboard
+A server-side rendered (SSR) admin dashboard built with Next.js App Router for managing products in an e-commerce system.
+The project focuses on secure admin access, product CRUD, validation,cloud based images, and scalable backend architecture.
+
+Objective
+To design and implement a server-rendered admin dashboard that allows administrators to create, view, update, and delete products efficiently with strong validation and authentication.
+ Key Features
+ Server-Side Rendering (SSR) using Next.js App Router
+ Authentication & Authorization (Admin-only access)
+ Complete Product CRUD (Create, Read, Update, Delete)
+ Strong input validation using Zod
+ Image upload support (Cloudinary-ready)
+ Dashboard metrics & charts
+ Database integration using Prisma + PostgreSQL
+ Secure admin onboarding & logout
+ Optimized backend routes using Next.js Route Handlers
 
 Admin (Dummy)Credentials:
 Shana@gmail.com
@@ -39,16 +54,6 @@ Sales:
 - productId
 - quantity
 - date
-
-Every /admin/* page should check that the current user is logged in and has role ADMIN; otherwise redirect to login.
-
-Only ADMIN users can hit product CRUD APIs (create, update, delete, even list if it’s an internal API).
-
-The “Create Admin” (onboarding) page itself must be inside /admin and double-check the user is an admin before allowing creation.
-
-All backend API handlers must verify the session/role; never trust only the frontend.
-
-Before uploading or saving any image, validate type (e.g., jpeg/png), size, and maybe dimensions.
 
 Framework: Next.js (App Router)
 DB: PostgreSQL
