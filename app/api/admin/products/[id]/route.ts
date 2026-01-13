@@ -6,9 +6,9 @@ import { z } from "zod";
 export const dynamic = "force-dynamic";
 
 const productSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  price: z.number().positive("Price must be greater than 0"),
-  stock: z.number().int().nonnegative("Stock cannot be negative"),
+  name: z.string().min(2),
+  price: z.number().positive(),
+  stock: z.number().int().nonnegative(),
   description: z.string().nullable(),
 });
 
@@ -18,8 +18,6 @@ export async function POST(
 ) {
   const auth = await requireAdmin();
   if (!auth.ok) return auth.response;
-
-  const { id } = params;
 
   const body = await req.json();
 
@@ -38,7 +36,7 @@ export async function POST(
   }
 
   await prisma.product.update({
-    where: { id },
+    where: { id: params.id },
     data: parsed.data,
   });
 
