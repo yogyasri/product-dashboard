@@ -1,4 +1,5 @@
 Server-Rendered E-commerce Product Management Dashboard
+There is an issue with deployment please run in vscode
 A server-side rendered (SSR) admin dashboard built with Next.js App Router for managing products in an e-commerce system.
 The project focuses on secure admin access, product CRUD, validation,cloud based images, and scalable backend architecture.
 
@@ -14,6 +15,8 @@ To design and implement a server-rendered admin dashboard that allows administra
  Database integration using Prisma + PostgreSQL
  Secure admin onboarding & logout
  Optimized backend routes using Next.js Route Handlers
+
+
 
 Admin (Dummy)Credentials:
 Shana@gmail.com
