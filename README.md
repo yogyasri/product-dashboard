@@ -1,5 +1,5 @@
 Server-Rendered E-commerce Product Management Dashboard
-There is an issue with deployment please run in vscode
+There is an issue with deployment please run in vscode.
 A server-side rendered (SSR) admin dashboard built with Next.js App Router for managing products in an e-commerce system.
 The project focuses on secure admin access, product CRUD, validation,cloud based images, and scalable backend architecture.
 
